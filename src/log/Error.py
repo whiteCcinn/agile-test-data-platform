@@ -1,0 +1,2 @@
+class MetaInitError(Exception):
+    pass
