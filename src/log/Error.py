@@ -1,2 +1,0 @@
-class MetaInitError(Exception):
-    pass
