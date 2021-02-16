@@ -27,6 +27,30 @@ loggers:
     level: DEBUG
     handlers: [console, file]
     propagate: no
+  cmd:
+    level: DEBUG
+    handlers: [console, file]
+    propagate: no
+  constant:
+    level: DEBUG
+    handlers: [console, file]
+    propagate: no
+  domain:
+    level: DEBUG
+    handlers: [console, file]
+    propagate: no
+  log:
+    level: DEBUG
+    handlers: [console, file]
+    propagate: no
+  pool:
+    level: DEBUG
+    handlers: [console, file]
+    propagate: no
+  util:
+    level: DEBUG
+    handlers: [console, file]
+    propagate: no
 root:
   level: INFO
   handlers: [console, file]

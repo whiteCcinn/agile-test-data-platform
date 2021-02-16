@@ -7,6 +7,18 @@ logger_default = logging
 
 logger_system = logging.getLogger('system')
 
+logger_cmd = logging.getLogger('cmd')
+
+logger_constant = logging.getLogger('constant')
+
+logger_domain = logging.getLogger('domain')
+
+logger_log = logging.getLogger('log')
+
+logger_pool = logging.getLogger('pool')
+
+logger_util = logging.getLogger('util')
+
 
 def customized_logger(name):
     logger = logging.getLogger(name)

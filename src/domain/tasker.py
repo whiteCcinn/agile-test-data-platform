@@ -5,28 +5,6 @@ from src.constant.domain import FILE_SINK_TYPE, MYSQL_SINK_TYPE
 from src.domain.sinker import MysqlSinker, FileSinker
 
 
-class Task:
-    def __init__(self, meta=None, scenario=None, entries=[], sink_type=MYSQL_SINK_TYPE):
-        self.meta = meta
-        self.scenario = scenario
-        self.entries = entries
-        self.sink_type = sink_type
-        if self.sink_type == MYSQL_SINK_TYPE:
-            self.sinker = MysqlSinker(self)
-        elif self.sink_type == FILE_SINK_TYPE:
-            self.sinker = FileSinker(self)
-        else:
-            raise TaskError(f'task init failed: f{self}')
-
-    def __repr__(self):
-        return f"Task(meta={self.meta}," \
-               f"scenario={self.scenario}," \
-               f"sink_type={self.sink_type}," \
-               f"entries={self.entries})"
-
-    __str__ = __repr__
-
-
 class Meta:
     def __init__(self, table, uniq_key):
         self.table = table
@@ -46,7 +24,8 @@ class Meta:
 class Scenario:
     def __init__(self, name):
         self.name = name
-        self.identify = md5(name)
+        self.identify = None
+        self.identify_ref = None
 
     def __repr__(self):
         return f"Scenario(name={self.name}," \
@@ -59,6 +38,34 @@ class Entry:
 
     def __repr__(self):
         return f"Entry(data={self.data})"
+
+
+class Task:
+    def __init__(self, meta: Meta = None, scenario: Scenario = None, entries=[], sink_type=MYSQL_SINK_TYPE):
+        self.meta = meta
+        self.scenario = scenario
+        self.entries = entries
+        self.sink_type = sink_type
+        self.scenario.identify_ref = self.meta.table + ''.join(self.meta.uniq_key) + self.sink_type
+        self.scenario.identify = md5(self.scenario.identify_ref)
+
+        if self.sink_type == MYSQL_SINK_TYPE:
+            self.sinker = MysqlSinker(self)
+        elif self.sink_type == FILE_SINK_TYPE:
+            self.sinker = FileSinker(self)
+        else:
+            raise TaskError(f'task init failed: f{self}')
+
+    def __repr__(self):
+        return f"Task(meta={self.meta}," \
+               f"scenario={self.scenario}," \
+               f"sink_type={self.sink_type}," \
+               f"entries={self.entries})"
+
+    __str__ = __repr__
+
+    def add_entry(self, data):
+        self.entries.append(Entry(data))
 
 
 def create_task(table, uniq_key, scenario_name, sink_type=MYSQL_SINK_TYPE):

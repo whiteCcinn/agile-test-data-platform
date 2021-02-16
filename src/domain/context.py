@@ -1,30 +1,38 @@
 from src.pool.mysql_pool import *
 from src.util.singleton import SingletonType
-import asyncio
+from src.log.logger import logger_domain
+from asyncio import get_event_loop
+from src.config_manager import get_mysql_config
 
 ctx = None
 
 
 class Context(metaclass=SingletonType):
     def __init__(self, mysql_pool: dict):
-        self.mysql_pool = MysqlPool(**mysql_pool)
+        self.mysql_pool_config = mysql_pool
+        self.mysql_pool = MysqlPool(**self.mysql_pool_config)
         global ctx
         ctx = self
+
+    def __repr__(self):
+        return f"Context(mysql_pool={self.mysql_pool_config})"
+
+    __str__ = __repr__
 
 
 def get_context() -> Context:
     global ctx
     if ctx is None:
-        loop = asyncio.get_event_loop()
+        loop = get_event_loop()
+        mysql_info = get_mysql_config()
         Context(mysql_pool={
             'min_size': 1,
             'max_size': 10,
-            'host': '127.0.0.1',
-            'port': 3306,
-            'user': 'root',
-            'password': '123456',
-            'loop': loop
+            'loop': loop,
+            'echo': True,
+            **mysql_info
         })
+        logger_domain.debug(f'Initialize {ctx} successfully')
 
     return ctx
 

@@ -6,6 +6,9 @@ RUNTIME_ENV = "ATDP_ENV"
 
 runtime_enum = ["dev", "prod"]
 
+MYSQL_DB = 'atdp'
+
+INIT_DB_FILE = 'tables.sql'
 
 def get_runtime_env():
     runtime_env = os.environ.get(RUNTIME_ENV)

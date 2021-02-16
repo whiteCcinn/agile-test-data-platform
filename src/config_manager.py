@@ -16,6 +16,33 @@ loaded_cfgs = {}
 
 _cfg_base_path = ""
 
+mysql_config = {
+    'mysql_host': '127.0.0.1',
+    'mysql_port': 3306,
+    'mysql_user': 'root',
+    'mysql_passwd': '123456',
+}
+
+
+def set_mysql_config(data):
+    global mysql_config
+    mysql_config = data
+    logging.info(f'Set MYSQL infomation successfully : {mysql_config}')
+
+
+def get_mysql_config():
+    global mysql_config
+    return mysql_config
+
+
+def wrapper_mysql_info(mysql_host, mysql_port, mysql_user, mysql_passwd):
+    set_mysql_config({
+        'host': mysql_host,
+        'port': mysql_port,
+        'user': mysql_user,
+        'password': mysql_passwd,
+    })
+
 
 # 获取配置当前的目录
 def get_cfg_base_path():
@@ -33,7 +60,7 @@ def init_logger() -> None:
         with open(cfg_logger, 'r', encoding='UTF-8') as f:
             config = yaml.safe_load(f.read())
         logging.config.dictConfig(config)
-        logging.info('Initialize logger successfully')
+        logging.debug('Initialize logger successfully')
     except Exception:
         logging.error(traceback.format_exc())
         sys.exit()
