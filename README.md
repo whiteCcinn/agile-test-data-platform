@@ -14,31 +14,100 @@ docker build -t atdp .
 ## Usage
 
 ```shell
-➜  agile-test-data-platform git:(main) python3 cli.py
+➜  agile-test-data-platform git:(main) ✗ python3 cli.py
 Usage: cli.py [OPTIONS] COMMAND [ARGS]...
 
 Options:
+  --help  Show this message and exit.
+
+Commands:
+  execute    执行造数
+  init-db    初始化数据库
+  show-data  终端展示表
+```
+
+## 初始化数据库
+
+```
+➜  agile-test-data-platform git:(main) ✗ python3 cli.py init-db --help
+Usage: cli.py init-db [OPTIONS]
+
+  初始化数据库
+
+Options:
+  --log_level INTEGER   log-level
   --mysql_host TEXT     Mysql connect host
   --mysql_port INTEGER  Mysql connect port
   --mysql_user TEXT     Mysql connect user
   --mysql_passwd TEXT   Mysql connect passwd
   --help                Show this message and exit.
 
-Commands:
-  execute  执行造数
-  init-db  初始化数据库
-```
-
-## 初始化数据库
-
-```
-python3 cli.py init-db
+➜  agile-test-data-platform git:(main) ✗ python3 cli.py init-db
 ```
 
 ## 执行造数
 
 ```
-python3 cli.py execute --table "my.runoob_tbl"  --uniq_key "runoob_id=1" --task_name "测试"
+➜  agile-test-data-platform git:(main) ✗ python3 cli.py execute --help
+Usage: cli.py execute [OPTIONS]
+
+  执行造数
+
+Options:
+  --log_level INTEGER   log-level
+  --mysql_host TEXT     Mysql connect host
+  --mysql_port INTEGER  Mysql connect port
+  --mysql_user TEXT     Mysql connect user
+  --mysql_passwd TEXT   Mysql connect passwd
+  --table TEXT          The table name of the work.  [required]
+  --uniq_key TEXT       A unique index of the data, use commas to separate
+                        fields.  [required]
+
+  --task_name TEXT      Remark the nickname of the mission.  [required]
+  --help                Show this message and exit.
+
+➜  agile-test-data-platform git:(main) ✗ python3 cli.py execute --table "my.runoob_tbl"  --uniq_key "runoob_id=1" --task_name "测试"
+```
+
+## 终端显示数据
+
+```
+➜  agile-test-data-platform git:(main) ✗ python3 cli.py show-data --help
+Usage: cli.py show-data [OPTIONS]
+
+  终端展示表
+
+Options:
+  --log_level INTEGER   log-level
+  --mysql_host TEXT     Mysql connect host
+  --mysql_port INTEGER  Mysql connect port
+  --mysql_user TEXT     Mysql connect user
+  --mysql_passwd TEXT   Mysql connect passwd
+  --fields TEXT         Task's fields,table alias in [task,entry]
+  --name TEXT           Task's.name
+  --id INTEGER          Task's.id
+  --offset TEXT         offset stat
+  --limit TEXT          limit stat
+  --order_by TEXT       order_by stat
+  --group_by TEXT       group_by stat
+  --having TEXT         having stat
+  --help                Show this message and exit.
+  
+➜  agile-test-data-platform git:(main) ✗ python3 cli.py show-data --fields 'task.*' --limit 2
++----+----------------------------------+----------+-------------------------------+--------------+
+| id |             identify             |   name   |          identify_ref         | created_time |
++----+----------------------------------+----------+-------------------------------+--------------+
+| 39 | 9c67a77b8d0a0872a0180654cd331bf4 | 开发测试 |    my.runoob_tbltype=1mysql   |  1613488755  |
+| 40 | 92d10464281cba8f3bd3a7c903402865 | 开发测试 | my.runoob_tblrunoob_id=1mysql |  1613493140  |
++----+----------------------------------+----------+-------------------------------+--------------+
+
+➜  agile-test-data-platform git:(main) ✗ python3 cli.py show-data
++----+----------------------------------+----------+-------------------------------+--------------+---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id |             identify             |   name   |          identify_ref         | created_time | task_id |                                                                                        sql                                                                                         |
++----+----------------------------------+----------+-------------------------------+--------------+---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| 39 | 9c67a77b8d0a0872a0180654cd331bf4 | 开发测试 |    my.runoob_tbltype=1mysql   |  1613488755  |    39   | INSERT INTO my.runoob_tbl (`runoob_id`,`runoob_title`,`runoob_author`,`submission_date`,`type`,`ddd`) VALUES (1," PHP","","2021-02-14",1,NULL),(2," MySQL","","2021-02-14",1,NULL) |
+| 40 | 92d10464281cba8f3bd3a7c903402865 | 开发测试 | my.runoob_tblrunoob_id=1mysql |  1613493140  |    40   |                   INSERT INTO my.runoob_tbl (`runoob_id`,`runoob_title`,`runoob_author`,`submission_date`,`type`,`ddd`) VALUES (1," PHP","","2021-02-14",1,NULL)                   |
++----+----------------------------------+----------+-------------------------------+--------------+---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
 ## 过程演示

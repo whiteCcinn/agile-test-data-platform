@@ -4,6 +4,7 @@ import os
 import sys
 import traceback
 from src.constant.common import get_runtime_env
+from src.log.logger import logger_config,set_loggers_level
 
 import yaml
 import src
@@ -27,7 +28,7 @@ mysql_config = {
 def set_mysql_config(data):
     global mysql_config
     mysql_config = data
-    logging.info(f'Set MYSQL infomation successfully : {mysql_config}')
+    logger_config.info(f'Set MYSQL infomation successfully : {mysql_config}')
 
 
 def get_mysql_config():
@@ -54,13 +55,15 @@ def get_cfg_base_path():
 
 
 # 日志系统主函数
-def init_logger() -> None:
+def init_logger(log_level=None) -> None:
     try:
         cfg_logger = _get_cfg_path('logger')
         with open(cfg_logger, 'r', encoding='UTF-8') as f:
             config = yaml.safe_load(f.read())
         logging.config.dictConfig(config)
-        logging.debug('Initialize logger successfully')
+        if log_level is not None:
+            set_loggers_level(log_level)
+        logger_config.debug('Initialize logger successfully')
     except Exception:
         logging.error(traceback.format_exc())
         sys.exit()
@@ -75,7 +78,7 @@ def init_configs() -> None:
     cfg_maps = {
         "base": runtime_env
     }
-    logging.info(f'Initialize [{runtime_env}] config successfully')
+    logger_config.info(f'Initialize [{runtime_env}] config successfully')
 
 
 def find(cfg_name, key, default=None):

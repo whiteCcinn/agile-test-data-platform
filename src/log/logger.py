@@ -3,7 +3,7 @@ import os
 from logging import handlers
 from pathlib import Path
 
-logger_default = logging
+logger_config = logging.getLogger('config')
 
 logger_system = logging.getLogger('system')
 
@@ -19,10 +19,25 @@ logger_pool = logging.getLogger('pool')
 
 logger_util = logging.getLogger('util')
 
+log_level: int
+
+
+def set_loggers_level(level):
+    logger_config.setLevel(level)
+    logger_system.setLevel(level)
+    logger_cmd.setLevel(level)
+    logger_constant.setLevel(level)
+    logger_domain.setLevel(level)
+    logger_log.setLevel(level)
+    logger_util.setLevel(level)
+
 
 def customized_logger(name):
     logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)
+    if log_level is not None:
+        logger.setLevel(log_level)
+    else:
+        logger.setLevel(logging.DEBUG)
     return logger
 
 

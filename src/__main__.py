@@ -4,7 +4,7 @@ import sys
 import traceback
 
 from src import config_manager
-from src.log.logger import logger_system
+from src.log.logger import logger_system, set_loggers_level
 from src.constant.common import APP_NAME
 
 cur_path = os.path.abspath(os.path.dirname(__file__))
@@ -12,16 +12,16 @@ root_path = os.path.split(cur_path)[0]
 sys.path.append(root_path)
 
 
-async def _init() -> None:
+async def _init(log_level=None) -> None:
     # logger和config初始化
-    config_manager.init_logger()
+    config_manager.init_logger(log_level)
     config_manager.init_configs()
 
 
-def init():
+def init(log_level=None):
     loop = asyncio.new_event_loop()  # 创建并返回一个新的事件对象
     asyncio.events.set_event_loop(loop)  # 将当前上下文的事件循环设置为loop
-    loop.run_until_complete(_init())  # 运行startup直到这个任务完成
+    loop.run_until_complete(_init(log_level))  # 运行startup直到这个任务完成
     return loop
 
 
