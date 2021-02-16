@@ -132,6 +132,8 @@ class MysqlSinker(ISinker, MysqlExt):
             for dd in d:
                 if isinstance(dd, int):
                     v.append(str(dd))
+                elif dd is None:
+                    v.append('NULL')
                 else:
                     v.append("\"%s\"" % dd)
             insert_data.append('(' + ','.join(v) + ')')
