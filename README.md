@@ -29,20 +29,18 @@ Commands:
 ## 初始化数据库
 
 ```
-➜  agile-test-data-platform git:(main) ✗ python3 cli.py init-db --help
+➜  agile-test-data-platform git:(main) python3 cli.py init-db --help
 Usage: cli.py init-db [OPTIONS]
 
   初始化数据库
 
 Options:
-  --log_level INTEGER   log-level
-  --mysql_host TEXT     Mysql connect host
-  --mysql_port INTEGER  Mysql connect port
-  --mysql_user TEXT     Mysql connect user
-  --mysql_passwd TEXT   Mysql connect passwd
-  --help                Show this message and exit.
-
-➜  agile-test-data-platform git:(main) ✗ python3 cli.py init-db
+  --log_level INTEGER          log-level
+  --target_mysql_host TEXT     Mysql[target] connect host
+  --target_mysql_port INTEGER  Mysql[target] connect port
+  --target_mysql_user TEXT     Mysql[target] connect user
+  --target_mysql_passwd TEXT   Mysql[target] connect passwd
+  --help                       Show this message and exit.
 ```
 
 ## 执行造数
@@ -54,19 +52,21 @@ Usage: cli.py execute [OPTIONS]
   执行造数
 
 Options:
-  --log_level INTEGER   log-level
-  --mysql_host TEXT     Mysql connect host
-  --mysql_port INTEGER  Mysql connect port
-  --mysql_user TEXT     Mysql connect user
-  --mysql_passwd TEXT   Mysql connect passwd
-  --table TEXT          The table name of the work.  [required]
-  --uniq_key TEXT       A unique index of the data, use commas to separate
-                        fields.  [required]
+  --log_level INTEGER          log-level
+  --source_mysql_host TEXT     Mysql[source] connect host
+  --source_mysql_port INTEGER  Mysql[source] connect port
+  --source_mysql_user TEXT     Mysql[source] connect user
+  --source_mysql_passwd TEXT   Mysql[source] connect passwd
+  --target_mysql_host TEXT     Mysql[target] connect host
+  --target_mysql_port INTEGER  Mysql[target] connect port
+  --target_mysql_user TEXT     Mysql[target] connect user
+  --target_mysql_passwd TEXT   Mysql[target] connect passwd
+  --table TEXT                 The table name of the work.  [required]
+  --uniq_key TEXT              A unique index of the data, use commas to
+                               separate fields.  [required]
 
-  --task_name TEXT      Remark the nickname of the mission.  [required]
-  --help                Show this message and exit.
-
-➜  agile-test-data-platform git:(main) ✗ python3 cli.py execute --table "my.runoob_tbl"  --uniq_key "runoob_id=1" --task_name "测试"
+  --task_name TEXT             Remark the nickname of the mission.  [required]
+  --help                       Show this message and exit.
 ```
 
 ## 终端显示数据
@@ -78,20 +78,20 @@ Usage: cli.py show-data [OPTIONS]
   终端展示表
 
 Options:
-  --log_level INTEGER   log-level
-  --mysql_host TEXT     Mysql connect host
-  --mysql_port INTEGER  Mysql connect port
-  --mysql_user TEXT     Mysql connect user
-  --mysql_passwd TEXT   Mysql connect passwd
-  --fields TEXT         Task's fields,table alias in [task,entry]
-  --name TEXT           Task's.name
-  --id INTEGER          Task's.id
-  --offset TEXT         offset stat
-  --limit TEXT          limit stat
-  --order_by TEXT       order_by stat
-  --group_by TEXT       group_by stat
-  --having TEXT         having stat
-  --help                Show this message and exit.
+  --log_level INTEGER          log-level
+  --target_mysql_host TEXT     Mysql[target] connect host
+  --target_mysql_port INTEGER  Mysql[target] connect port
+  --target_mysql_user TEXT     Mysql[target] connect user
+  --target_mysql_passwd TEXT   Mysql[target] connect passwd
+  --fields TEXT                Task's fields,table alias in [task,entry]
+  --name TEXT                  Task's.name
+  --id INTEGER                 Task's.id
+  --offset TEXT                offset stat
+  --limit TEXT                 limit stat
+  --order_by TEXT              order_by stat
+  --group_by TEXT              group_by stat
+  --having TEXT                having stat
+  --help                       Show this message and exit.
   
 ➜  agile-test-data-platform git:(main) ✗ python3 cli.py show-data --fields 'task.*' --limit 2
 +----+----------------------------------+----------+-------------------------------+--------------+
