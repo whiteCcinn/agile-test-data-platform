@@ -29,17 +29,19 @@ Commands:
 ## 初始化数据库
 
 ```
-➜  agile-test-data-platform git:(main) python3 cli.py init-db --help
+➜  agile-test-data-platform git:(main) ✗ python3 cli.py init-db --help
 Usage: cli.py init-db [OPTIONS]
 
   初始化数据库
 
 Options:
-  --log_level INTEGER          log-level
-  --target_mysql_host TEXT     Mysql[target] connect host
-  --target_mysql_port INTEGER  Mysql[target] connect port
-  --target_mysql_user TEXT     Mysql[target] connect user
-  --target_mysql_passwd TEXT   Mysql[target] connect passwd
+  --log_level INTEGER          log-level  [default: 40]
+  --target_mysql_host TEXT     Mysql[target] connect host  [default:
+                               127.0.0.1]
+
+  --target_mysql_port INTEGER  Mysql[target] connect port  [default: 3306]
+  --target_mysql_user TEXT     Mysql[target] connect user  [default: root]
+  --target_mysql_passwd TEXT   Mysql[target] connect passwd  [default: 123456]
   --help                       Show this message and exit.
 ```
 
@@ -52,15 +54,19 @@ Usage: cli.py execute [OPTIONS]
   执行造数
 
 Options:
-  --log_level INTEGER          log-level
-  --source_mysql_host TEXT     Mysql[source] connect host
-  --source_mysql_port INTEGER  Mysql[source] connect port
-  --source_mysql_user TEXT     Mysql[source] connect user
-  --source_mysql_passwd TEXT   Mysql[source] connect passwd
-  --target_mysql_host TEXT     Mysql[target] connect host
-  --target_mysql_port INTEGER  Mysql[target] connect port
-  --target_mysql_user TEXT     Mysql[target] connect user
-  --target_mysql_passwd TEXT   Mysql[target] connect passwd
+  --log_level INTEGER          log-level  [default: 40]
+  --source_mysql_host TEXT     Mysql[source] connect host  [default:
+                               127.0.0.1]
+
+  --source_mysql_port INTEGER  Mysql[source] connect port  [default: 3306]
+  --source_mysql_user TEXT     Mysql[source] connect user  [default: root]
+  --source_mysql_passwd TEXT   Mysql[source] connect passwd  [default: 123456]
+  --target_mysql_host TEXT     Mysql[target] connect host  [default:
+                               127.0.0.1]
+
+  --target_mysql_port INTEGER  Mysql[target] connect port  [default: 3306]
+  --target_mysql_user TEXT     Mysql[target] connect user  [default: root]
+  --target_mysql_passwd TEXT   Mysql[target] connect passwd  [default: 123456]
   --table TEXT                 The table name of the work.  [required]
   --uniq_key TEXT              A unique index of the data, use commas to
                                separate fields.  [required]
@@ -78,12 +84,16 @@ Usage: cli.py show-data [OPTIONS]
   终端展示表
 
 Options:
-  --log_level INTEGER          log-level
-  --target_mysql_host TEXT     Mysql[target] connect host
-  --target_mysql_port INTEGER  Mysql[target] connect port
-  --target_mysql_user TEXT     Mysql[target] connect user
-  --target_mysql_passwd TEXT   Mysql[target] connect passwd
+  --log_level INTEGER          log-level  [default: 40]
+  --target_mysql_host TEXT     Mysql[target] connect host  [default:
+                               127.0.0.1]
+
+  --target_mysql_port INTEGER  Mysql[target] connect port  [default: 3306]
+  --target_mysql_user TEXT     Mysql[target] connect user  [default: root]
+  --target_mysql_passwd TEXT   Mysql[target] connect passwd  [default: 123456]
   --fields TEXT                Task's fields,table alias in [task,entry]
+                               [default: *]
+
   --name TEXT                  Task's.name
   --id INTEGER                 Task's.id
   --offset TEXT                offset stat
