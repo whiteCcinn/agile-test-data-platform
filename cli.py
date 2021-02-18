@@ -3,6 +3,7 @@ from src.__main__ import init
 from src.cmd.execute import execute_cmd
 from src.cmd.init_db import init_db_cmd
 from src.cmd.show_data import show_data_cmd
+import src.cmd
 from src.config_manager import wrapper_mysql_info
 import logging
 
@@ -11,7 +12,8 @@ common_options = [
 ]
 
 source_mysql_options = [
-    click.option('--source_mysql_host', required=False, default='127.0.0.1', type=str, help='Mysql[source] connect host'),
+    click.option('--source_mysql_host', required=False, default='127.0.0.1', type=str,
+                 help='Mysql[source] connect host'),
     click.option('--source_mysql_port', required=False, default=3306, type=int, help='Mysql[source] connect port'),
     click.option('--source_mysql_user', required=False, default='root', type=str, help='Mysql[source] connect user'),
     click.option('--source_mysql_passwd', required=False, default='123456', type=str,
@@ -47,7 +49,7 @@ def cli():
 @add_options(target_mysql_options)
 def init_db(**kwargs):
     pre(kwargs)
-    init_db_cmd()
+    src.cmd.invoke_cmd(init_db_cmd)
 
 
 @cli.command(help='执行造数')
@@ -62,7 +64,7 @@ def execute(
         **kwargs
 ):
     pre(kwargs)
-    execute_cmd(table, uniq_key, task_name)
+    src.cmd.invoke_cmd(execute_cmd, table, uniq_key, task_name)
 
 
 @cli.command(help='终端展示表')
@@ -85,7 +87,7 @@ def show_data(
         **kwargs
 ):
     pre(kwargs)
-    show_data_cmd(fields, name, id, offset, limit, order_by, group_by, having)
+    src.cmd.invoke_cmd(show_data_cmd, fields, name, id, offset, limit, order_by, group_by, having)
 
 
 def pre(ctx: dict):

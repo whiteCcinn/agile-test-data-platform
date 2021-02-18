@@ -15,8 +15,6 @@ class Context(metaclass=SingletonType):
             self.mysql_pool = MysqlPool(**self.mysql_pool_config.get('source'))
         if self.mysql_pool_config.get('target') is not None:
             self.target_mysql_pool = MysqlPool(**self.mysql_pool_config.get('target'))
-        global ctx
-        ctx = self
 
     def __repr__(self):
         return f"Context(mysql_pool={self.mysql_pool_config}," \
@@ -30,13 +28,19 @@ class Context(metaclass=SingletonType):
     def get_source_mysql(self):
         return self.mysql_pool
 
+    def close(self):
+        if self.get_sinker_mysql() is not None:
+            self.get_sinker_mysql().close()
+        if self.get_source_mysql() is not None:
+            self.get_source_mysql().close()
+
 
 def get_context() -> Context:
     global ctx
     if ctx is None:
         loop = get_event_loop()
         mysql_info = get_mysql_config()
-        Context(mysql_pool={
+        ctx = Context(mysql_pool={
             'min_size': 1,
             'max_size': 10,
             'loop': loop,
@@ -46,6 +50,14 @@ def get_context() -> Context:
         logger_domain.debug(f'Initialize {ctx} successfully')
 
     return ctx
+
+
+def close_context():
+    global ctx
+    if ctx is None:
+        return
+    if isinstance(ctx, Context):
+        ctx.close()
 
 
 async def test_example(conn, cur):
