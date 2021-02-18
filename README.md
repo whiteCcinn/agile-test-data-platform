@@ -6,9 +6,14 @@ That is (Asyncio).
 这是一个全异步的脚本框架，用于敏捷测试中的造数过程，服务于开发和测试的一个平台，全部基于协程完成。
 即（asyncio）。
 
-## Docker
+## Docker Developer
 ```shell
 docker build -t atdp .
+```
+
+## Local Developer
+```shell
+pip3 install -i https://pypi.douban.com/simple --default-timeout=100 -r ./requirements.txt
 ```
 
 ## Usage
