@@ -10,14 +10,25 @@ ctx = None
 class Context(metaclass=SingletonType):
     def __init__(self, mysql_pool: dict):
         self.mysql_pool_config = mysql_pool
-        self.mysql_pool = MysqlPool(**self.mysql_pool_config)
+        self.mysql_pool = self.target_mysql_pool = None
+        if self.mysql_pool_config.get('source') is not None:
+            self.mysql_pool = MysqlPool(**self.mysql_pool_config.get('source'))
+        if self.mysql_pool_config.get('target') is not None:
+            self.target_mysql_pool = MysqlPool(**self.mysql_pool_config.get('target'))
         global ctx
         ctx = self
 
     def __repr__(self):
-        return f"Context(mysql_pool={self.mysql_pool_config})"
+        return f"Context(mysql_pool={self.mysql_pool_config}," \
+               f"target_mysql_pool={self.target_mysql_pool})"
 
     __str__ = __repr__
+
+    def get_sinker_mysql(self):
+        return self.target_mysql_pool
+
+    def get_source_mysql(self):
+        return self.mysql_pool
 
 
 def get_context() -> Context:
@@ -37,7 +48,7 @@ def get_context() -> Context:
     return ctx
 
 
-async def test_example(cur):
+async def test_example(conn, cur):
     # await cur.execute("SELECT 42;")
     await cur.execute("show databases;")
     # print(cur.description)
@@ -62,4 +73,4 @@ if __name__ == '__main__':
     #     'password': '123456',
     #     'loop': loop
     # })
-    print(get_context().mysql_pool.execute(test_example))
+    print(get_context().get_sinker_mysql().execute(test_example))

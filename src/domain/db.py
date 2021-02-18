@@ -8,7 +8,7 @@ from src.constant.common import INIT_DB_FILE
 
 
 def init_db():
-    get_context().mysql_pool.execute(_init_db_worker)
+    get_context().get_sinker_mysql().execute(_init_db_worker)
 
 
 async def _init_db_worker(conn, cur):

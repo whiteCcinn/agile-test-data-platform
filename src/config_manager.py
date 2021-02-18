@@ -4,7 +4,7 @@ import os
 import sys
 import traceback
 from src.constant.common import get_runtime_env
-from src.log.logger import logger_config,set_loggers_level
+from src.log.logger import logger_config, set_loggers_level
 
 import yaml
 import src
@@ -18,10 +18,18 @@ loaded_cfgs = {}
 _cfg_base_path = ""
 
 mysql_config = {
-    'mysql_host': '127.0.0.1',
-    'mysql_port': 3306,
-    'mysql_user': 'root',
-    'mysql_passwd': '123456',
+    'source': {
+        'host': '127.0.0.1',
+        'port': 3306,
+        'user': 'root',
+        'password': '123456'
+    },
+    'target': {
+        'host': '127.0.0.1',
+        'port': 3306,
+        'user': 'root',
+        'password': '123456'
+    },
 }
 
 
@@ -36,13 +44,33 @@ def get_mysql_config():
     return mysql_config
 
 
-def wrapper_mysql_info(mysql_host, mysql_port, mysql_user, mysql_passwd):
-    set_mysql_config({
-        'host': mysql_host,
-        'port': mysql_port,
-        'user': mysql_user,
-        'password': mysql_passwd,
-    })
+def wrapper_mysql_info(
+        source_mysql_host=None, source_mysql_port=None, source_mysql_user=None, source_mysql_passwd=None,
+        target_mysql_host=None, target_mysql_port=None, target_mysql_user=None, target_mysql_passwd=None,
+):
+    config = {'source': None, 'target': None}
+    if not (source_mysql_host is None
+            or source_mysql_port is None
+            or source_mysql_user is None
+            or source_mysql_passwd is None):
+        config['source'] = {
+            'host': source_mysql_host,
+            'port': source_mysql_port,
+            'user': source_mysql_user,
+            'password': source_mysql_passwd,
+        }
+
+    if not (target_mysql_host is None
+            or target_mysql_port is None
+            or target_mysql_user is None
+            or target_mysql_passwd is None):
+        config['target'] = {
+            'host': target_mysql_host,
+            'port': target_mysql_port,
+            'user': target_mysql_user,
+            'password': target_mysql_passwd,
+        }
+    set_mysql_config(config)
 
 
 # 获取配置当前的目录

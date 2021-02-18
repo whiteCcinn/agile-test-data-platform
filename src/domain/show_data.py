@@ -89,4 +89,4 @@ class SelectTableShow(MysqlExt):
         print(tables.get_string())
 
     def execute(self):
-        get_context().mysql_pool.execute(self._worker)
+        get_context().get_sinker_mysql().execute(self._worker)

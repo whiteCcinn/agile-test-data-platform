@@ -27,7 +27,7 @@ class FileSinker(ISinker):
         self.task = task
 
     def sink(self):
-        get_context().mysql_pool.execute(self._sink)
+        get_context().get_sinker_mysql().execute(self._sink)
 
     async def _sink(self, conn, cur):
         await cur.execute("show databases;")
@@ -40,7 +40,7 @@ class MysqlSinker(ISinker, MysqlExt):
         self.task = task
 
     def sink(self):
-        get_context().mysql_pool.execute(self._sink)
+        get_context().get_sinker_mysql().execute(self._sink)
 
     async def _sink(self, conn, cur):
         # 查看是否有重复的task
